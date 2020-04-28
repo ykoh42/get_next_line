@@ -6,13 +6,13 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 11:44:46 by ykoh              #+#    #+#             */
-/*   Updated: 2020/05/02 16:30:22 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/05/02 16:39:59 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 1000000000
 
 static char	*lineupdate(char *line, char *tmp)
 {

@@ -6,7 +6,7 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 22:01:51 by ykoh              #+#    #+#             */
-/*   Updated: 2020/05/30 18:48:10 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/06/04 19:33:45 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,32 @@
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*str;
+	static char	*tmpbuf;
 	char		buf[BUFFER_SIZE + 1];
-	ssize_t		readcnt;
 	char		*nl;
 	char		*tmp;
+	ssize_t		readcnt;
 
-	readcnt = 0;
-	while (!(nl = ft_strchr(str, '\n')) &&
-			(readcnt = read(fd, buf, BUFFER_SIZE)) > 0)
+	if (fd < 0 || fd > OPEN_MAX || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	while (!(nl = ft_strchr(tmpbuf, '\n')) &&
+			(readcnt = read(fd, buf, BUFFER_SIZE)) != 0)
 	{
-		buf[readcnt] = 0;
-		tmp = (str) ? ft_strjoin(str, buf) : buf;
-		free(str);
-		str = tmp;
+		if (readcnt == -1) return (-1);
+		buf[readcnt] = '\0';
+		tmp = (tmpbuf) ? ft_strjoin(tmpbuf, buf) : ft_strndup(buf, readcnt);
+		free(tmpbuf);
+		tmpbuf = tmp;
 	}
 	if (nl)
 	{
-		*line = ft_strndup(str, nl - str + 1);
-		tmp = str;
-		str = ft_strndup(nl + 1, BUFFER_SIZE);
+		tmp = tmpbuf;
+		*line = ft_strndup(tmp, nl - tmp);
+		tmpbuf = ft_strndup(nl + 1, BUFFER_SIZE);
 		free(tmp);
 		return (1);
 	}
-	if (readcnt == 0)
-	{
-		*line = str;
-		str = NULL;
-	}
+	*line = (readcnt || !tmpbuf) ? ft_strndup("", 0) : tmpbuf;
+	tmpbuf = NULL;
 	return (readcnt);
 }

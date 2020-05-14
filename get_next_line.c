@@ -6,7 +6,7 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 22:01:51 by ykoh              #+#    #+#             */
-/*   Updated: 2020/06/04 19:33:45 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/06/04 20:50:45 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int			get_next_line(int fd, char **line)
 	while (!(nl = ft_strchr(tmpbuf, '\n')) &&
 			(readcnt = read(fd, buf, BUFFER_SIZE)) != 0)
 	{
-		if (readcnt == -1) return (-1);
+		if (readcnt == -1)
+			return (-1);
 		buf[readcnt] = '\0';
 		tmp = (tmpbuf) ? ft_strjoin(tmpbuf, buf) : ft_strndup(buf, readcnt);
 		free(tmpbuf);
@@ -39,7 +40,8 @@ int			get_next_line(int fd, char **line)
 		free(tmp);
 		return (1);
 	}
-	*line = (readcnt || !tmpbuf) ? ft_strndup("", 0) : tmpbuf;
+	*line = (tmpbuf) ? tmpbuf : ft_strndup("", 1);
+	free(tmpbuf);
 	tmpbuf = NULL;
-	return (readcnt);
+	return (0);
 }

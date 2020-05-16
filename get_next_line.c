@@ -6,32 +6,40 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 22:01:51 by ykoh              #+#    #+#             */
-/*   Updated: 2020/06/05 13:19:45 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/06/05 14:38:50 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_nl(char **line, char **tmpline)
+static int	ft_nl(char **line, char **tmpline, char **buf)
 {
 	const char	*tmp = *tmpline;
 	const char	*nl = ft_strchr(*tmpline, '\n');
 
-	*line = ft_strndup(tmp, nl - tmp);
-	*tmpline = ft_strndup(nl + 1, BUFFER_SIZE);
-	free((void *)tmp);
-	return (1);
+	if (nl)
+	{
+		*line = ft_strndup(tmp, nl - tmp);
+		*tmpline = ft_strndup(nl + 1, BUFFER_SIZE);
+		free((void *)tmp);
+		return (1);
+	}
+	*line = (*tmpline) ? *tmpline : ft_strndup("", 1);
+	*tmpline = NULL;
+	free(*buf);
+	return (0);
 }
 
 int			get_next_line(int fd, char **line)
 {
 	static char	*tmpline;
-	char		buf[BUFFER_SIZE + 1];
+	char		*buf;
 	char		*nl;
 	char		*tmp;
 	ssize_t		readcnt;
 
-	if (!line || BUFFER_SIZE <= 0)
+	if (!line || BUFFER_SIZE <= 0 ||
+		!(buf = malloc((BUFFER_SIZE + 1) * sizeof(char))))
 		return (-1);
 	while ((!(nl = ft_strchr(tmpline, '\n')) &&
 			(readcnt = read(fd, buf, BUFFER_SIZE)) != 0))
@@ -43,9 +51,5 @@ int			get_next_line(int fd, char **line)
 		free(tmpline);
 		tmpline = tmp;
 	}
-	if (nl)
-		return (ft_nl(line, &tmpline));
-	*line = (tmpline) ? tmpline : ft_strndup("", 1);
-	tmpline = NULL;
-	return (0);
+	return (ft_nl(line, &tmpline, &buf));
 }

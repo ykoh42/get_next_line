@@ -6,7 +6,7 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 22:17:47 by ykoh              #+#    #+#             */
-/*   Updated: 2020/06/04 16:03:31 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/06/05 14:42:55 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+# endif
 
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);

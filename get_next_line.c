@@ -6,7 +6,7 @@
 /*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/22 22:01:51 by ykoh              #+#    #+#             */
-/*   Updated: 2020/06/05 14:38:50 by ykoh             ###   ########.fr       */
+/*   Updated: 2020/06/05 14:54:37 by ykoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	ft_nl(char **line, char **tmpline, char **buf)
 		*line = ft_strndup(tmp, nl - tmp);
 		*tmpline = ft_strndup(nl + 1, BUFFER_SIZE);
 		free((void *)tmp);
+		free(*buf);
 		return (1);
 	}
 	*line = (*tmpline) ? *tmpline : ft_strndup("", 1);
@@ -45,7 +46,10 @@ int			get_next_line(int fd, char **line)
 			(readcnt = read(fd, buf, BUFFER_SIZE)) != 0))
 	{
 		if (readcnt == -1)
+		{
+			free(buf);
 			return (-1);
+		}
 		buf[readcnt] = '\0';
 		tmp = (tmpline) ? ft_strjoin(tmpline, buf) : ft_strndup(buf, readcnt);
 		free(tmpline);

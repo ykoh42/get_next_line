@@ -71,4 +71,4 @@
 In addition to the mandatory part, the following rules are added:
 
 1. It should work on the file descriptors between several calls of get_next_line.
-2. It should use single static variable.
+2. It should use a single static variable.

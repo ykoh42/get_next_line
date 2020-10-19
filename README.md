@@ -6,7 +6,7 @@
 - **Get_Next_Line_Tester** by [Hellio404](https://github.com/Hellio404)  
 
     ```shell
-    git clone https://github.com/Hellio404/Get_Next_Line_Tester.git
+    git clone https://github.com/kohyounghwan/Get_Next_Line_Tester
     ```
 
 - **42TESTERS-GNL** by [Mazoise](https://github.com/Mazoise)
